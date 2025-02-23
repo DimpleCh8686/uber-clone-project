@@ -268,3 +268,152 @@ Authorization: Bearer token (required)
 ## 🔍 **Notes**
 - Ensure that the request includes a valid JWT token.
 ---
+
+
+## 📌 Captain Registration Endpoint  
+
+### **🔗 Endpoint:**  
+`POST /captains/register`  
+
+### **📝 Description**  
+This endpoint allows captains to register by providing their full name, email, password, and vehicle details.  
+
+---
+
+## 📅 Request  
+
+### **🔗 HTTP Method**  
+`POST`  
+
+### **🔗 Request URL**  
+`/captains/register`  
+
+### **🔗 Request Headers**  
+```http
+Content-Type: application/json
+```
+
+### **🔗 Request Body (JSON)**  
+The request body must be a JSON object containing the following fields:  
+
+| Field        | Type   | Description                                      | Required |
+|-------------|--------|--------------------------------------------------|----------|
+| `fullname`  | Object | Contains `firstname` and `lastname` fields.     | ✅ Yes  |
+| `firstname` | String | Must be at least 3 characters long.             | ✅ Yes  |
+| `lastname`  | String | Must be at least 3 characters long.             | ✅ Yes  |
+| `email`     | String | Must be a valid and unique email address.       | ✅ Yes  |
+| `password`  | String | Must be at least 6 characters long.             | ✅ Yes  |
+| `vehicle`   | Object | Contains vehicle details.                        | ✅ Yes  |
+| `color`     | String | Must be at least 3 characters long.             | ✅ Yes  |
+| `plate`     | String | Must be at least 3 characters long.             | ✅ Yes  |
+| `capacity`  | Number | Must be at least 1 passenger.                   | ✅ Yes  |
+| `vehicleType` | String | Must be one of 'car', 'motorcycle', or 'auto'. | ✅ Yes  |
+
+### **📌 Example Request**  
+
+```http
+POST /captains/register HTTP/1.1
+Host: example.com
+Content-Type: application/json
+
+{
+  "fullname": {
+    "firstname": "Jane",
+    "lastname": "Doe"
+  },
+  "email": "jane.doe@example.com",
+  "password": "password123",
+  "vehicle": {
+    "color": "red",
+    "plate": "ABC123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+---
+
+## 👤 Responses  
+
+### ✅ **Success Response**  
+If the registration is successful, a JWT token and captain details are returned.  
+
+- **Status Code:** `201 Created`  
+- **Response Body:**  
+
+```json
+{
+  "token": "jwt-token",
+  "captain": {
+    "_id": "captain-id",
+    "fullname": {
+      "firstname": "Jane",
+      "lastname": "Doe"
+    },
+    "email": "jane.doe@example.com",
+    "vehicle": {
+      "color": "red",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }
+}
+```
+---
+### ❌ **Validation Errors**  
+If the request contains invalid or missing data, a `400 Bad Request` error is returned.  
+
+- **Status Code:** `400 Bad Request`  
+- **Example Response:**  
+
+```json
+{
+  "errors": [
+    {
+      "msg": "Please enter a valid email",
+      "param": "email",
+      "location": "body"
+    },
+    {
+      "msg": "Firstname must be at least 3 characters long",
+      "param": "fullname.firstname",
+      "location": "body"
+    },
+    {
+      "msg": "Password must be at least 6 characters long",
+      "param": "password",
+      "location": "body"
+    },
+    {
+      "msg": "Color must be at least 3 characters long",
+      "param": "vehicle.color",
+      "location": "body"
+    },
+    {
+      "msg": "Plate must be at least 3 characters long",
+      "param": "vehicle.plate",
+      "location": "body"
+    },
+    {
+      "msg": "Capacity must be at least 1 passenger",
+      "param": "vehicle.capacity",
+      "location": "body"
+    },
+    {
+      "msg": "Invalid vehicle type",
+      "param": "vehicle.vehicleType",
+      "location": "body"
+    }
+  ]
+}
+```
+
+---
+
+## 🔍 **Notes**
+- Ensure that the email is unique.
+- Passwords are hashed before being stored in the database.
+
+---
