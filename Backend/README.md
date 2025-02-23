@@ -417,3 +417,177 @@ If the request contains invalid or missing data, a `400 Bad Request` error is re
 - Passwords are hashed before being stored in the database.
 
 ---
+
+## 📌 Captain Login Endpoint
+
+## 📅 Request  
+
+### **🔗 HTTP Method**  
+`POST`  
+
+### **🔗 Request URL**  
+`/captains/login`  
+
+### **📝 Description**  
+This endpoint is used to authenticate a captain. It requires the captain's email and password.
+
+---
+
+## 📥 Request  
+
+### **📄 Request Body (JSON)**  
+The request body must be a JSON object containing the following fields:
+
+| Field       | Type   | Description                           | Required |
+|------------|--------|---------------------------------------|----------|
+| `email`    | String | Must be a valid email address.       | ✅ Yes  |
+| `password` | String | Must be at least 6 characters long.  | ✅ Yes  |
+
+### **📌 Example Request**  
+
+```json
+{
+  "email": "jane.doe@example.com",
+  "password": "password123"
+}
+```
+
+---
+
+## 📤 Responses  
+
+### ✅ **Success Response**  
+- **Status Code:** `200 OK`
+- **Response Body:**  
+
+```json
+{
+  "token": "jwt-token",
+  "captain": {
+    "_id": "captain-id",
+    "fullname": {
+      "firstname": "Jane",
+      "lastname": "Doe"
+    },
+    "email": "jane.doe@example.com",
+    "vehicle": {
+      "color": "red",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }
+}
+```
+
+---
+
+### ❌ **Validation Errors**  
+- **Status Code:** `400 Bad Request`
+- **Response Body:**  
+
+```json
+{
+  "errors": [
+    {
+      "msg": "Please enter a valid email",
+      "param": "email",
+      "location": "body"
+    },
+    {
+      "msg": "Password must be at least 6 characters long",
+      "param": "password",
+      "location": "body"
+    }
+  ]
+}
+```
+
+---
+
+## 📌 Captain Profile Endpoint
+
+## 📅 Request  
+
+### **🔗 HTTP Method**  
+`GET`  
+
+### **🔗 Request URL**  
+`/captains/profile`  
+
+### **📄 Request Headers**  
+```http
+Authorization: Bearer token (required)
+```
+
+### ✅ **Success Response**  
+- **Status Code:** `200 OK`
+- **Response Body:**  
+
+```json
+{
+  "_id": "captain-id",
+  "fullname": {
+    "firstname": "Jane",
+    "lastname": "Doe"
+  },
+  "email": "jane.doe@example.com",
+  "vehicle": {
+    "color": "red",
+    "plate": "ABC123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+### ❌ **Authentication Errors**
+- **Status Code**: 401 Unauthorized
+- **Body**:
+  ```json
+  {
+    "message": "Authentication failed"
+  }
+  ```
+
+## 🔍 **Notes**
+- Ensure that the request includes a valid JWT token.
+
+
+```
+
+---
+
+## 📌 Captain Logout Endpoint
+
+## 📅 Request  
+
+### **🔗 HTTP Method**  
+`GET`  
+
+### **🔗 Request URL**  
+`/captains/logout`  
+
+### **✅ Success Response**  
+- **Status Code:** `200 OK`
+- **Response Body:**  
+
+```json
+{
+  "message": "Logged out successfully"
+}
+```
+
+---
+
+### ❌ **Authentication Errors** 
+- **Status Code**: 401 Unauthorized
+- **Body**:
+  ```json
+  {
+    "message": "Authentication failed"
+  }
+  ```
+
+## 🔍 **Notes**
+- Ensure that the request includes a valid JWT token.
