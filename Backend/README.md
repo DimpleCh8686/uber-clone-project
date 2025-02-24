@@ -553,12 +553,9 @@ Authorization: Bearer token (required)
 ## 🔍 **Notes**
 - Ensure that the request includes a valid JWT token.
 
-
-```
-
 ---
 
-## 📌 Captain Logout Endpoint
+## 📌 **Captain Logout Endpoint**
 
 ## 📅 Request  
 
@@ -578,7 +575,6 @@ Authorization: Bearer token (required)
 }
 ```
 
----
 
 ### ❌ **Authentication Errors** 
 - **Status Code**: 401 Unauthorized
