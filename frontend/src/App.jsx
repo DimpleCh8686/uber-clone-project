@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Start from './pages/Start';
 import UserSignup from './pages/UserSignup';
@@ -8,6 +8,9 @@ import CaptainLogin from './pages/CaptainLogin';
 import Home from './pages/Home';
 import UserProtectWrapper from './pages/UserProtectWrapper';
 import UserLogout from './pages/UserLogout'
+import CaptainHome from './pages/CaptainHome';
+import CaptainProtectWrapper from './pages/CaptainProtectWrapper'
+import CaptainLogout from './pages/CaptainLogout';
 
 const App = () => {
   return (
@@ -27,6 +30,18 @@ const App = () => {
           <Route path='/user/logout' element={<UserProtectWrapper>
            <UserLogout />
           </UserProtectWrapper>
+          } />
+
+          <Route path='/captain-home' element={
+            <CaptainProtectWrapper>
+               <CaptainHome />
+            </CaptainProtectWrapper>
+            }/>
+
+          <Route path='/captain/logout' element={
+            <CaptainProtectWrapper>
+              <CaptainLogout />
+            </CaptainProtectWrapper>
           } />
 
       </Routes>
