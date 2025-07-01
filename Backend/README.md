@@ -1,4 +1,4 @@
-# Backend API Documentation  
+# Backend & Frontend API Documentation  
 
 ## 📌 User Registration Endpoint  
 
@@ -587,3 +587,1608 @@ Authorization: Bearer token (required)
 
 ## 🔍 **Notes**
 - Ensure that the request includes a valid JWT token.
+
+## 📌 Maps Endpoints
+
+### 1. Get Coordinates
+
+**Endpoint:** `GET /maps/get-coordinates`  
+**Description:** Returns latitude and longitude for a given address string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name    | Type   | Required | Description                  |
+  |---------|--------|----------|------------------------------|
+  | address | string |   Yes    | Address to geocode (min 3 chars) |
+
+**Example:**
+```
+GET /maps/get-coordinates?address=New+York
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "ltd": 40.7127753,
+    "lng": -74.0059728
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "address", ... } ] }
+  ```
+- **404 Not Found**
+  ```json
+  { "message": "Coordinates not found" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 2. Get Distance and Time
+
+**Endpoint:** `GET /maps/get-distance-time`  
+**Description:** Returns distance and estimated travel time between two locations.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name        | Type   | Required | Description                        |
+  |-------------|--------|----------|------------------------------------|
+  | origin      | string |   Yes    | Origin address (min 3 chars)       |
+  | destination | string |   Yes    | Destination address (min 3 chars)  |
+
+**Example:**
+```
+GET /maps/get-distance-time?origin=Delhi&destination=Mumbai
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "distance": { "text": "1,423 km", "value": 1423000 },
+    "duration": { "text": "1 day 1 hour", "value": 90000 },
+    "status": "OK"
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "...", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 3. Get Autocomplete Suggestions
+
+**Endpoint:** `GET /maps/get-suggestions`  
+**Description:** Returns address autocomplete suggestions for a given input string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name  | Type   | Required | Description                      |
+  |-------|--------|----------|----------------------------------|
+  | input | string |   Yes    | Partial address (min 3 chars)    |
+
+**Example:**
+```
+GET /maps/get-suggestions?input=New
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  [
+    "New York, NY, USA",
+    "Newark, NJ, USA",
+    "New Delhi, Delhi, India"
+  ]
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "input", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+**Note:** All `/maps` endpoints require a valid JWT token in the `Authorization` header.
+
+## 📌 Maps Endpoints
+
+### 1. Get Coordinates
+
+**Endpoint:** `GET /maps/get-coordinates`  
+**Description:** Returns latitude and longitude for a given address string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name    | Type   | Required | Description                  |
+  |---------|--------|----------|------------------------------|
+  | address | string |   Yes    | Address to geocode (min 3 chars) |
+
+**Example:**
+```
+GET /maps/get-coordinates?address=New+York
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "ltd": 40.7127753,
+    "lng": -74.0059728
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "address", ... } ] }
+  ```
+- **404 Not Found**
+  ```json
+  { "message": "Coordinates not found" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 2. Get Distance and Time
+
+**Endpoint:** `GET /maps/get-distance-time`  
+**Description:** Returns distance and estimated travel time between two locations.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name        | Type   | Required | Description                        |
+  |-------------|--------|----------|------------------------------------|
+  | origin      | string |   Yes    | Origin address (min 3 chars)       |
+  | destination | string |   Yes    | Destination address (min 3 chars)  |
+
+**Example:**
+```
+GET /maps/get-distance-time?origin=Delhi&destination=Mumbai
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "distance": { "text": "1,423 km", "value": 1423000 },
+    "duration": { "text": "1 day 1 hour", "value": 90000 },
+    "status": "OK"
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "...", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 3. Get Autocomplete Suggestions
+
+**Endpoint:** `GET /maps/get-suggestions`  
+**Description:** Returns address autocomplete suggestions for a given input string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name  | Type   | Required | Description                      |
+  |-------|--------|----------|----------------------------------|
+  | input | string |   Yes    | Partial address (min 3 chars)    |
+
+**Example:**
+```
+GET /maps/get-suggestions?input=New
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  [
+    "New York, NY, USA",
+    "Newark, NJ, USA",
+    "New Delhi, Delhi, India"
+  ]
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "input", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+**Note:** All `/maps` endpoints require a valid JWT token in the `Authorization` header.
+
+## 📌 Maps Endpoints
+
+### 1. Get Coordinates
+
+**Endpoint:** `GET /maps/get-coordinates`  
+**Description:** Returns latitude and longitude for a given address string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name    | Type   | Required | Description                  |
+  |---------|--------|----------|------------------------------|
+  | address | string |   Yes    | Address to geocode (min 3 chars) |
+
+**Example:**
+```
+GET /maps/get-coordinates?address=New+York
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "ltd": 40.7127753,
+    "lng": -74.0059728
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "address", ... } ] }
+  ```
+- **404 Not Found**
+  ```json
+  { "message": "Coordinates not found" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 2. Get Distance and Time
+
+**Endpoint:** `GET /maps/get-distance-time`  
+**Description:** Returns distance and estimated travel time between two locations.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name        | Type   | Required | Description                        |
+  |-------------|--------|----------|------------------------------------|
+  | origin      | string |   Yes    | Origin address (min 3 chars)       |
+  | destination | string |   Yes    | Destination address (min 3 chars)  |
+
+**Example:**
+```
+GET /maps/get-distance-time?origin=Delhi&destination=Mumbai
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "distance": { "text": "1,423 km", "value": 1423000 },
+    "duration": { "text": "1 day 1 hour", "value": 90000 },
+    "status": "OK"
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "...", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 3. Get Autocomplete Suggestions
+
+**Endpoint:** `GET /maps/get-suggestions`  
+**Description:** Returns address autocomplete suggestions for a given input string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name  | Type   | Required | Description                      |
+  |-------|--------|----------|----------------------------------|
+  | input | string |   Yes    | Partial address (min 3 chars)    |
+
+**Example:**
+```
+GET /maps/get-suggestions?input=New
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  [
+    "New York, NY, USA",
+    "Newark, NJ, USA",
+    "New Delhi, Delhi, India"
+  ]
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "input", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+**Note:** All `/maps` endpoints require a valid JWT token in the `Authorization` header.
+
+## 📌 Maps Endpoints
+
+### 1. Get Coordinates
+
+**Endpoint:** `GET /maps/get-coordinates`  
+**Description:** Returns latitude and longitude for a given address string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name    | Type   | Required | Description                  |
+  |---------|--------|----------|------------------------------|
+  | address | string |   Yes    | Address to geocode (min 3 chars) |
+
+**Example:**
+```
+GET /maps/get-coordinates?address=New+York
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "ltd": 40.7127753,
+    "lng": -74.0059728
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "address", ... } ] }
+  ```
+- **404 Not Found**
+  ```json
+  { "message": "Coordinates not found" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 2. Get Distance and Time
+
+**Endpoint:** `GET /maps/get-distance-time`  
+**Description:** Returns distance and estimated travel time between two locations.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name        | Type   | Required | Description                        |
+  |-------------|--------|----------|------------------------------------|
+  | origin      | string |   Yes    | Origin address (min 3 chars)       |
+  | destination | string |   Yes    | Destination address (min 3 chars)  |
+
+**Example:**
+```
+GET /maps/get-distance-time?origin=Delhi&destination=Mumbai
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "distance": { "text": "1,423 km", "value": 1423000 },
+    "duration": { "text": "1 day 1 hour", "value": 90000 },
+    "status": "OK"
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "...", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 3. Get Autocomplete Suggestions
+
+**Endpoint:** `GET /maps/get-suggestions`  
+**Description:** Returns address autocomplete suggestions for a given input string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name  | Type   | Required | Description                      |
+  |-------|--------|----------|----------------------------------|
+  | input | string |   Yes    | Partial address (min 3 chars)    |
+
+**Example:**
+```
+GET /maps/get-suggestions?input=New
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  [
+    "New York, NY, USA",
+    "Newark, NJ, USA",
+    "New Delhi, Delhi, India"
+  ]
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "input", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+**Note:** All `/maps` endpoints require a valid JWT token in the `Authorization` header.
+
+## 📌 Maps Endpoints
+
+### 1. Get Coordinates
+
+**Endpoint:** `GET /maps/get-coordinates`  
+**Description:** Returns latitude and longitude for a given address string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name    | Type   | Required | Description                  |
+  |---------|--------|----------|------------------------------|
+  | address | string |   Yes    | Address to geocode (min 3 chars) |
+
+**Example:**
+```
+GET /maps/get-coordinates?address=New+York
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "ltd": 40.7127753,
+    "lng": -74.0059728
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "address", ... } ] }
+  ```
+- **404 Not Found**
+  ```json
+  { "message": "Coordinates not found" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 2. Get Distance and Time
+
+**Endpoint:** `GET /maps/get-distance-time`  
+**Description:** Returns distance and estimated travel time between two locations.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name        | Type   | Required | Description                        |
+  |-------------|--------|----------|------------------------------------|
+  | origin      | string |   Yes    | Origin address (min 3 chars)       |
+  | destination | string |   Yes    | Destination address (min 3 chars)  |
+
+**Example:**
+```
+GET /maps/get-distance-time?origin=Delhi&destination=Mumbai
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "distance": { "text": "1,423 km", "value": 1423000 },
+    "duration": { "text": "1 day 1 hour", "value": 90000 },
+    "status": "OK"
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "...", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 3. Get Autocomplete Suggestions
+
+**Endpoint:** `GET /maps/get-suggestions`  
+**Description:** Returns address autocomplete suggestions for a given input string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name  | Type   | Required | Description                      |
+  |-------|--------|----------|----------------------------------|
+  | input | string |   Yes    | Partial address (min 3 chars)    |
+
+**Example:**
+```
+GET /maps/get-suggestions?input=New
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  [
+    "New York, NY, USA",
+    "Newark, NJ, USA",
+    "New Delhi, Delhi, India"
+  ]
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "input", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+**Note:** All `/maps` endpoints require a valid JWT token in the `Authorization` header.
+## 📌 Maps Endpoints
+
+### 1. Get Coordinates
+
+**Endpoint:** `GET /maps/get-coordinates`  
+**Description:** Returns latitude and longitude for a given address string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name    | Type   | Required | Description                  |
+  |---------|--------|----------|------------------------------|
+  | address | string |   Yes    | Address to geocode (min 3 chars) |
+
+**Example:**
+```
+GET /maps/get-coordinates?address=New+York
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "ltd": 40.7127753,
+    "lng": -74.0059728
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "address", ... } ] }
+  ```
+- **404 Not Found**
+  ```json
+  { "message": "Coordinates not found" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 2. Get Distance and Time
+
+**Endpoint:** `GET /maps/get-distance-time`  
+**Description:** Returns distance and estimated travel time between two locations.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name        | Type   | Required | Description                        |
+  |-------------|--------|----------|------------------------------------|
+  | origin      | string |   Yes    | Origin address (min 3 chars)       |
+  | destination | string |   Yes    | Destination address (min 3 chars)  |
+
+**Example:**
+```
+GET /maps/get-distance-time?origin=Delhi&destination=Mumbai
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "distance": { "text": "1,423 km", "value": 1423000 },
+    "duration": { "text": "1 day 1 hour", "value": 90000 },
+    "status": "OK"
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "...", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 3. Get Autocomplete Suggestions
+
+**Endpoint:** `GET /maps/get-suggestions`  
+**Description:** Returns address autocomplete suggestions for a given input string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name  | Type   | Required | Description                      |
+  |-------|--------|----------|----------------------------------|
+  | input | string |   Yes    | Partial address (min 3 chars)    |
+
+**Example:**
+```
+GET /maps/get-suggestions?input=New
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  [
+    "New York, NY, USA",
+    "Newark, NJ, USA",
+    "New Delhi, Delhi, India"
+  ]
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "input", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+**Note:** All `/maps` endpoints require a valid JWT token in the `Authorization` header.
+
+## 📌 Maps Endpoints
+
+### 1. Get Coordinates
+
+**Endpoint:** `GET /maps/get-coordinates`  
+**Description:** Returns latitude and longitude for a given address string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name    | Type   | Required | Description                  |
+  |---------|--------|----------|------------------------------|
+  | address | string |   Yes    | Address to geocode (min 3 chars) |
+
+**Example:**
+```
+GET /maps/get-coordinates?address=New+York
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "ltd": 40.7127753,
+    "lng": -74.0059728
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "address", ... } ] }
+  ```
+- **404 Not Found**
+  ```json
+  { "message": "Coordinates not found" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 2. Get Distance and Time
+
+**Endpoint:** `GET /maps/get-distance-time`  
+**Description:** Returns distance and estimated travel time between two locations.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name        | Type   | Required | Description                        |
+  |-------------|--------|----------|------------------------------------|
+  | origin      | string |   Yes    | Origin address (min 3 chars)       |
+  | destination | string |   Yes    | Destination address (min 3 chars)  |
+
+**Example:**
+```
+GET /maps/get-distance-time?origin=Delhi&destination=Mumbai
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "distance": { "text": "1,423 km", "value": 1423000 },
+    "duration": { "text": "1 day 1 hour", "value": 90000 },
+    "status": "OK"
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "...", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 3. Get Autocomplete Suggestions
+
+**Endpoint:** `GET /maps/get-suggestions`  
+**Description:** Returns address autocomplete suggestions for a given input string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name  | Type   | Required | Description                      |
+  |-------|--------|----------|----------------------------------|
+  | input | string |   Yes    | Partial address (min 3 chars)    |
+
+**Example:**
+```
+GET /maps/get-suggestions?input=New
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  [
+    "New York, NY, USA",
+    "Newark, NJ, USA",
+    "New Delhi, Delhi, India"
+  ]
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "input", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+**Note:** All `/maps` endpoints require a valid JWT token in the `Authorization` header.
+## 📌 Maps Endpoints
+
+### 1. Get Coordinates
+
+**Endpoint:** `GET /maps/get-coordinates`  
+**Description:** Returns latitude and longitude for a given address string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name    | Type   | Required | Description                  |
+  |---------|--------|----------|------------------------------|
+  | address | string |   Yes    | Address to geocode (min 3 chars) |
+
+**Example:**
+```
+GET /maps/get-coordinates?address=New+York
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "ltd": 40.7127753,
+    "lng": -74.0059728
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "address", ... } ] }
+  ```
+- **404 Not Found**
+  ```json
+  { "message": "Coordinates not found" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 2. Get Distance and Time
+
+**Endpoint:** `GET /maps/get-distance-time`  
+**Description:** Returns distance and estimated travel time between two locations.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name        | Type   | Required | Description                        |
+  |-------------|--------|----------|------------------------------------|
+  | origin      | string |   Yes    | Origin address (min 3 chars)       |
+  | destination | string |   Yes    | Destination address (min 3 chars)  |
+
+**Example:**
+```
+GET /maps/get-distance-time?origin=Delhi&destination=Mumbai
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "distance": { "text": "1,423 km", "value": 1423000 },
+    "duration": { "text": "1 day 1 hour", "value": 90000 },
+    "status": "OK"
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "...", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 3. Get Autocomplete Suggestions
+
+**Endpoint:** `GET /maps/get-suggestions`  
+**Description:** Returns address autocomplete suggestions for a given input string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name  | Type   | Required | Description                      |
+  |-------|--------|----------|----------------------------------|
+  | input | string |   Yes    | Partial address (min 3 chars)    |
+
+**Example:**
+```
+GET /maps/get-suggestions?input=New
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  [
+    "New York, NY, USA",
+    "Newark, NJ, USA",
+    "New Delhi, Delhi, India"
+  ]
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "input", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+**Note:** All `/maps` endpoints require a valid JWT token in the `Authorization` header.
+
+## 📌 Maps Endpoints
+
+### 1. Get Coordinates
+
+**Endpoint:** `GET /maps/get-coordinates`  
+**Description:** Returns latitude and longitude for a given address string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name    | Type   | Required | Description                  |
+  |---------|--------|----------|------------------------------|
+  | address | string |   Yes    | Address to geocode (min 3 chars) |
+
+**Example:**
+```
+GET /maps/get-coordinates?address=New+York
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "ltd": 40.7127753,
+    "lng": -74.0059728
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "address", ... } ] }
+  ```
+- **404 Not Found**
+  ```json
+  { "message": "Coordinates not found" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 2. Get Distance and Time
+
+**Endpoint:** `GET /maps/get-distance-time`  
+**Description:** Returns distance and estimated travel time between two locations.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name        | Type   | Required | Description                        |
+  |-------------|--------|----------|------------------------------------|
+  | origin      | string |   Yes    | Origin address (min 3 chars)       |
+  | destination | string |   Yes    | Destination address (min 3 chars)  |
+
+**Example:**
+```
+GET /maps/get-distance-time?origin=Delhi&destination=Mumbai
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "distance": { "text": "1,423 km", "value": 1423000 },
+    "duration": { "text": "1 day 1 hour", "value": 90000 },
+    "status": "OK"
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "...", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 3. Get Autocomplete Suggestions
+
+**Endpoint:** `GET /maps/get-suggestions`  
+**Description:** Returns address autocomplete suggestions for a given input string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name  | Type   | Required | Description                      |
+  |-------|--------|----------|----------------------------------|
+  | input | string |   Yes    | Partial address (min 3 chars)    |
+
+**Example:**
+```
+GET /maps/get-suggestions?input=New
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  [
+    "New York, NY, USA",
+    "Newark, NJ, USA",
+    "New Delhi, Delhi, India"
+  ]
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "input", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+**Note:** All `/maps` endpoints require a valid JWT token in the `Authorization` header.
+
+## 📌 Maps Endpoints
+
+### 1. Get Coordinates
+
+**Endpoint:** `GET /maps/get-coordinates`  
+**Description:** Returns latitude and longitude for a given address string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name    | Type   | Required | Description                  |
+  |---------|--------|----------|------------------------------|
+  | address | string |   Yes    | Address to geocode (min 3 chars) |
+
+**Example:**
+```
+GET /maps/get-coordinates?address=New+York
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "ltd": 40.7127753,
+    "lng": -74.0059728
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "address", ... } ] }
+  ```
+- **404 Not Found**
+  ```json
+  { "message": "Coordinates not found" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 2. Get Distance and Time
+
+**Endpoint:** `GET /maps/get-distance-time`  
+**Description:** Returns distance and estimated travel time between two locations.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name        | Type   | Required | Description                        |
+  |-------------|--------|----------|------------------------------------|
+  | origin      | string |   Yes    | Origin address (min 3 chars)       |
+  | destination | string |   Yes    | Destination address (min 3 chars)  |
+
+**Example:**
+```
+GET /maps/get-distance-time?origin=Delhi&destination=Mumbai
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "distance": { "text": "1,423 km", "value": 1423000 },
+    "duration": { "text": "1 day 1 hour", "value": 90000 },
+    "status": "OK"
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "...", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 3. Get Autocomplete Suggestions
+
+**Endpoint:** `GET /maps/get-suggestions`  
+**Description:** Returns address autocomplete suggestions for a given input string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name  | Type   | Required | Description                      |
+  |-------|--------|----------|----------------------------------|
+  | input | string |   Yes    | Partial address (min 3 chars)    |
+
+**Example:**
+```
+GET /maps/get-suggestions?input=New
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  [
+    "New York, NY, USA",
+    "Newark, NJ, USA",
+    "New Delhi, Delhi, India"
+  ]
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "input", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+**Note:** All `/maps` endpoints require a valid JWT token in the `Authorization` header.
+
+## 📌 Maps Endpoints
+
+### 1. Get Coordinates
+
+**Endpoint:** `GET /maps/get-coordinates`  
+**Description:** Returns latitude and longitude for a given address string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name    | Type   | Required | Description                  |
+  |---------|--------|----------|------------------------------|
+  | address | string |   Yes    | Address to geocode (min 3 chars) |
+
+**Example:**
+```
+GET /maps/get-coordinates?address=New+York
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "ltd": 40.7127753,
+    "lng": -74.0059728
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "address", ... } ] }
+  ```
+- **404 Not Found**
+  ```json
+  { "message": "Coordinates not found" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 2. Get Distance and Time
+
+**Endpoint:** `GET /maps/get-distance-time`  
+**Description:** Returns distance and estimated travel time between two locations.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name        | Type   | Required | Description                        |
+  |-------------|--------|----------|------------------------------------|
+  | origin      | string |   Yes    | Origin address (min 3 chars)       |
+  | destination | string |   Yes    | Destination address (min 3 chars)  |
+
+**Example:**
+```
+GET /maps/get-distance-time?origin=Delhi&destination=Mumbai
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "distance": { "text": "1,423 km", "value": 1423000 },
+    "duration": { "text": "1 day 1 hour", "value": 90000 },
+    "status": "OK"
+  }
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "...", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+### 3. Get Autocomplete Suggestions
+
+**Endpoint:** `GET /maps/get-suggestions`  
+**Description:** Returns address autocomplete suggestions for a given input string.
+
+#### Request
+
+- **Headers:**
+  ```
+  Authorization: Bearer <token>
+  ```
+- **Query Parameters:**
+  | Name  | Type   | Required | Description                      |
+  |-------|--------|----------|----------------------------------|
+  | input | string |   Yes    | Partial address (min 3 chars)    |
+
+**Example:**
+```
+GET /maps/get-suggestions?input=New
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  [
+    "New York, NY, USA",
+    "Newark, NJ, USA",
+    "New Delhi, Delhi, India"
+  ]
+  ```
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "...", "param": "input", ... } ] }
+  ```
+- **500 Internal Server Error**
+  ```json
+  { "message": "Internal server error" }
+  ```
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+---
+
+**Note:** All `/maps` endpoints require a valid JWT token in the `Authorization` header.
+## 📝 Error Handling
+
+All endpoints return appropriate HTTP status codes and error messages for invalid input, authentication errors, and server errors. Always check the response for an `errors` array or a `message` field.
+
+---
+
+## 📚 See Also
+
+- [Maps Endpoints](#maps-endpoints) for location and route-related APIs.
+- [User Endpoints](#user-endpoints) for registration and authentication.
+
+---
