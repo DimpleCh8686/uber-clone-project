@@ -10,7 +10,7 @@ const UserSignup = () => {
   const [lastName, setLastName] = useState("");
 
   const navigate = useNavigate();
-  const { setUser } = useContext(UserDataContext);
+  const { user, setUser } = useContext(UserDataContext);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -44,7 +44,9 @@ const UserSignup = () => {
     <div className="p-7 h-screen flex flex-col justify-between">
       <div>
         <img className="w-16 mb-10" src="Uber-Logo.png" alt="Uber Logo" />
-        <form onSubmit={submitHandler}>
+        <form onSubmit={(e)=>{
+          submitHandler(e)
+        }}>
           <h3 className="text-lg font-medium mb-2">What's your name?</h3>
           <div className="flex gap-4 mb-6">
             <input
@@ -94,7 +96,6 @@ const UserSignup = () => {
         <p className="text-center mb-2">
           Already have an account?
           <Link to="/login" className="text-blue-600">
-            {" "}
             Login here
           </Link>
         </p>
