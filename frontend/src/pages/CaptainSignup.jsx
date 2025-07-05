@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import { Link } from 'react-router-dom'
 import { CaptainDataContext } from '../context/CaptainContext';
 import { useNavigate } from 'react-router-dom'
@@ -18,7 +18,7 @@ const CaptainSignup = () => {
   const [vehicleCapacity, setVehicleCapacity] = useState('')
   const [vehicleType, setVehicleType] = useState('') 
 
-  const {Captain, setCaptain} = React.useContext(CaptainDataContext)
+  const {captain, setCaptain} = useContext(CaptainDataContext)
 
   const submitHandler = async (e) => {
     e.preventDefault();

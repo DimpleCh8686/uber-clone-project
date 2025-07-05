@@ -1,4 +1,4 @@
-# Backend & Frontend API Documentation  
+# Backend API Documentation  
 
 ## 📌 User Registration Endpoint  
 
@@ -2192,3 +2192,236 @@ All endpoints return appropriate HTTP status codes and error messages for invali
 - [User Endpoints](#user-endpoints) for registration and authentication.
 
 ---
+
+### Get Fare Estimate
+
+**Endpoint:** `GET /rides/get-fare`  
+**Description:** Returns fare estimates for all vehicle types (`auto`, `car`, `moto`) between a pickup and destination location. Useful for showing users the price before booking a ride.
+
+#### Request
+
+- **Headers:**  
+  `Authorization: Bearer <token>`
+
+- **Query Parameters:**
+
+  | Name        | Type   | Required | Description                        |
+  |-------------|--------|----------|------------------------------------|
+  | pickup      | string |   Yes    | Pickup location (min 3 characters) |
+  | destination | string |   Yes    | Destination location (min 3 chars) |
+
+**Example Request:**
+```
+GET /rides/get-fare?pickup=Connaught+Place,+Delhi&destination=Indira+Gandhi+International+Airport,+Delhi
+Authorization: Bearer <token>
+```
+
+#### Responses
+
+- **200 OK**
+  ```json
+  {
+    "auto": 120,
+    "car": 180,
+    "moto": 90
+  }
+  ```
+  *(Values are examples; actual fares depend on distance and duration.)*
+
+- **400 Bad Request**
+  ```json
+  { "errors": [ { "msg": "Invalid pickup address", ... } ] }
+  ```
+
+- **401 Unauthorized**
+  ```json
+  { "message": "Unauthorized" }
+  ```
+
+- **500 Internal Server Error**
+  ```json
+  { "message": "Error message" }
+  ```
+
+#### Notes
+
+- All vehicle types are returned in a single response for easy comparison.
+- Fares are calculated based on distance and estimated duration between the two locations.
+- Requires user authentication.
+
+---
+
+## Ride Endpoints
+
+### Create Ride
+- **POST** `/rides/create`
+- Requires: `Authorization: Bearer <token>`
+- User requests a ride.
+
+**Request Body:**
+```json
+{
+  "pickup": "Connaught Place, Delhi",
+  "destination": "Indira Gandhi International Airport, Delhi",
+  "vehicleType": "car"
+}
+```
+
+**Success Response:**
+- `201 Created`
+```json
+{
+  "_id": "ride-id",
+  "user": "user-id",
+  "pickup": "Connaught Place, Delhi",
+  "destination": "Indira Gandhi International Airport, Delhi",
+  "fare": 350,
+  "status": "pending",
+  "otp": "123456"
+}
+```
+
+---
+
+### Get Fare Estimate
+
+- **GET** `/rides/get-fare`
+- Requires: `Authorization: Bearer <token>`
+- Returns fare estimates for all vehicle types.
+
+**Query Parameters:**
+- `pickup` (string, required)
+- `destination` (string, required)
+
+**Example:**
+```
+GET /rides/get-fare?pickup=Connaught+Place,+Delhi&destination=Indira+Gandhi+International+Airport,+Delhi
+Authorization: Bearer <token>
+```
+
+**Success Response:**
+```json
+{
+  "auto": 120,
+  "car": 180,
+  "moto": 90
+}
+```
+
+---
+
+### Confirm Ride
+
+- **POST** `/rides/confirm`
+- Requires: `Authorization: Bearer <captain-token>`
+- Captain accepts a ride.
+
+**Request Body:**
+```json
+{ "rideId": "ride-id" }
+```
+
+**Success Response:**
+- `200 OK`
+```json
+{
+  "_id": "ride-id",
+  "status": "accepted",
+  ...
+}
+```
+
+---
+
+### Start Ride
+
+- **GET** `/rides/start-ride`
+- Requires: `Authorization: Bearer <captain-token>`
+- Captain starts the ride with OTP.
+
+**Query Parameters:**
+- `rideId` (string, required)
+- `otp` (string, required)
+
+**Success Response:**
+- `200 OK`
+```json
+{
+  "_id": "ride-id",
+  "status": "ongoing",
+  ...
+}
+```
+
+---
+
+### End Ride
+
+- **POST** `/rides/end-ride`
+- Requires: `Authorization: Bearer <captain-token>`
+
+**Request Body:**
+```json
+{ "rideId": "ride-id" }
+```
+
+**Success Response:**
+- `200 OK`
+```json
+{
+  "_id": "ride-id",
+  "status": "completed",
+  ...
+}
+```
+
+---
+
+---
+
+## Live Tracking & Socket Events
+
+This backend uses **Socket.IO** for real-time updates (location, ride status, etc).
+
+### Socket Events
+
+- **join**:  
+  Sent by user/captain after connecting.  
+  Payload: `{ userId, userType }`
+
+- **update-location-captain**:  
+  Sent by captain to update their live location.  
+  Payload: `{ userId, location: { ltd, lng } }`
+
+- **new-ride**:  
+  Sent by server to captain when a new ride is created nearby.
+
+- **ride-confirmed**:  
+  Sent by server to user when a captain accepts the ride.
+
+- **ride-started**:  
+  Sent by server to user when the ride starts.
+
+- **ride-ended**:  
+  Sent by server to user when the ride ends.
+
+**Note:**  
+- Captains must regularly send their location using `update-location-captain` for live tracking and to be discoverable for ride requests.
+- Socket IDs are stored in the database for targeted real-time communication.
+
+---
+
+## Error Handling
+
+All endpoints return appropriate HTTP status codes and error messages for invalid input, authentication errors, and server errors.  
+Check for an `errors` array or a `message` field in the response.
+
+---
+
+## See Also
+
+- [Socket.IO Docs](https://socket.io/docs/)
+
+---
+
+**This documentation covers all backend endpoints, ride and maps logic, and real-time tracking.

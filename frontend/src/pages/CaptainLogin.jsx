@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -9,7 +9,7 @@ const CaptainLogin = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const { captain, setCaptain } = React.useContext(CaptainDataContext)
+  const { captain, setCaptain } = useContext(CaptainDataContext)
   const navigate = useNavigate()
       
   
@@ -24,7 +24,7 @@ const CaptainLogin = () => {
 
           if(response.status === 200) {
             const data = response.data
-            setCaptain(data.Captain)
+            setCaptain(data.captain)
 
             localStorage.setItem('token', data.token)
             navigate('/captain-home')

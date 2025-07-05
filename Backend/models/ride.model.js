@@ -4,12 +4,12 @@ const moongose = require('mongoose');
 const rideSchema = new moongose.Schema({
     user:{
         type: moongose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'user',
         required: true
     },
     captain:{
         type: moongose.Schema.Types.ObjectId,
-        ref: 'Captain',
+        ref: 'captain',
     },
     pickup:{
         type: String,
@@ -37,7 +37,7 @@ const rideSchema = new moongose.Schema({
     paymentID:{
         type: String,
     },
-    OrderId:{
+    orderId:{
         type: String,
     },
     signature:{
