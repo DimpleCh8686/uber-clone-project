@@ -15,7 +15,12 @@ mongoose.set('debug', true);
 
 connectToDb();
 
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: 'https://uber-clone-project-seven.vercel.app', 
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
