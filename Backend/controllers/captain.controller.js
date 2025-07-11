@@ -1,7 +1,9 @@
 const captainModel = require('../models/captain.model');
+const mongoose = require('mongoose');
 const captainService = require('../services/captain.service');
 const blacklistTokenModel = require('../models/blacklistToken.model');
 const { validationResult } = require('express-validator');
+const rideModel = require('../models/ride.model')
 
 module.exports.registerCaptain = async (req, res, next) => {
     const errors = validationResult(req);
@@ -26,7 +28,8 @@ module.exports.registerCaptain = async (req, res, next) => {
         color: vehicle.color,
         plate: vehicle.plate,
         capacity: vehicle.capacity,
-        vehicleType: vehicle.vehicleType
+        vehicleType: vehicle.vehicleType,
+        vehicleModel: vehicle.vehicleModel
     });
 
     const token = captain.generateAuthToken();
@@ -75,3 +78,34 @@ module.exports.logoutCaptain = async (req, res, next) => {
     res.clearCookie('token');
     res.status(200).json({message: 'Logout successful'});
 }
+
+module.exports.updateStats = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { rides = 0, hours = 0, earnings = 0 } = req.body;
+
+    if (req.captain._id.toString() !== id) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
+    const updated = await captainModel.findByIdAndUpdate(
+      id,
+      {
+        $inc: {
+          noOfRides: rides,
+          hoursOnline: hours,
+          earnings: earnings
+        }
+      },
+      { new: true, select: '-password' }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ message: 'Captain not found' });
+    }
+
+    res.status(200).json({ captain: updated });
+  } catch (err) {
+    next(err);
+  }
+};

@@ -1,14 +1,14 @@
-const moongose = require('mongoose');
+const mongoose = require('mongoose');
 
 
-const rideSchema = new moongose.Schema({
+const rideSchema = new mongoose.Schema({
     user:{
-        type: moongose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
         required: true
     },
     captain:{
-        type: moongose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'captain',
     },
     pickup:{
@@ -29,10 +29,7 @@ const rideSchema = new moongose.Schema({
         default: 'pending'
     },
     duration:{//in seconds
-        type: Number
-    },
-    distance:{//in meters
-        type: Number
+        type: String,
     },
     paymentID:{
         type: String,
@@ -47,7 +44,13 @@ const rideSchema = new moongose.Schema({
         type: String,
         select: false,
         required: true
-    }
-})
+    },
+    distance:{
+        type: Number,
+        required: true
+    },
+},{
+  timestamps: true
+});
 
-module.exports = moongose.model('ride', rideSchema);
+module.exports = mongoose.model('ride', rideSchema);

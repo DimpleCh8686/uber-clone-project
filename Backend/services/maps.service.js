@@ -32,25 +32,33 @@ module.exports.getDistanceTime = async (origin, destination) => {
     const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(destination)}&key=${apiKey}`;
 
     try {
-
-
         const response = await axios.get(url);
         if (response.data.status === 'OK') {
+            const element = response.data.rows[0].elements[0];
 
-            if (response.data.rows[ 0 ].elements[ 0 ].status === 'ZERO_RESULTS') {
+            if (element.status === 'ZERO_RESULTS') {
                 throw new Error('No routes found');
             }
 
-            return response.data.rows[ 0 ].elements[ 0 ];
+            return {
+                distance: {
+                    text: element.distance.text,
+                    value: element.distance.value
+                },
+                duration: {
+                    text: element.duration.text,
+                    value: element.duration.value
+                }
+            };
         } else {
             throw new Error('Unable to fetch distance and time');
         }
-
     } catch (err) {
         console.error(err);
         throw err;
     }
 }
+
 
 module.exports.getAutoCompleteSuggestions = async (input) => {
     if (!input) {

@@ -2,6 +2,7 @@ const rideModel = require('../models/ride.model');
 const mapService = require('./maps.service');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+const captainModel = require('../models/captain.model');
 
 async function getFare(pickup, destination) {
 
@@ -29,13 +30,12 @@ async function getFare(pickup, destination) {
         moto: 1.5
     };
 
-
-
     const fare = {
-        auto: Math.round(baseFare.auto + ((distanceTime.distance.value / 1000) * perKmRate.auto) + ((distanceTime.duration.value / 60) * perMinuteRate.auto)),
-        car: Math.round(baseFare.car + ((distanceTime.distance.value / 1000) * perKmRate.car) + ((distanceTime.duration.value / 60) * perMinuteRate.car)),
-        moto: Math.round(baseFare.moto + ((distanceTime.distance.value / 1000) * perKmRate.moto) + ((distanceTime.duration.value / 60) * perMinuteRate.moto))
+       auto: Math.round(baseFare.auto + ((distanceTime.distance.value / 1000) * perKmRate.auto) + ((distanceTime.duration.value / 60) * perMinuteRate.auto)),
+       car: Math.round(baseFare.car + ((distanceTime.distance.value / 1000) * perKmRate.car) + ((distanceTime.duration.value / 60) * perMinuteRate.car)),
+       moto: Math.round(baseFare.moto + ((distanceTime.distance.value / 1000) * perKmRate.moto) + ((distanceTime.duration.value / 60) * perMinuteRate.moto))
     };
+
 
     return fare;
 
@@ -63,14 +63,17 @@ module.exports.createRide = async ({
 
     const fare = await getFare(pickup, destination);
 
+    const distanceTime = await mapService.getDistanceTime(pickup, destination);
 
-
-    const ride = rideModel.create({
+    const ride = await rideModel.create({
         user,
         pickup,
         destination,
+        vehicleType,
         otp: getOtp(6),
-        fare: fare[ vehicleType ]
+        fare: fare[ vehicleType ],
+        distance: parseFloat((distanceTime.distance.value / 1000).toFixed(2)),
+        duration: distanceTime.duration.text
     })
 
     return ride;
@@ -87,7 +90,7 @@ module.exports.confirmRide = async ({
         _id: rideId
     }, {
         status: 'accepted',
-        captain: captain._id
+        captain: captain._id,
     })
 
     const ride = await rideModel.findOne({
@@ -155,6 +158,16 @@ module.exports.endRide = async ({ rideId, captain }) => {
     }, {
         status: 'completed'
     })
+
+    const rideFare = ride.fare || 0; // Make sure ride has a fare field
+    const captainDoc = await captainModel.findById(captain._id);
+
+    if (!captainDoc) {
+      throw new Error('Captain not found');
+    }
+
+    captainDoc.earnings = (captainDoc.earnings || 0) + rideFare;
+    await captainDoc.save();
 
     return ride;
 }

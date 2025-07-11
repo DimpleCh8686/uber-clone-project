@@ -43,7 +43,7 @@ const UserSignup = () => {
   return (
     <div className="p-7 h-screen flex flex-col justify-between">
       <div>
-        <img className="w-16 mb-10" src="Uber-Logo.png" alt="Uber Logo" />
+        <img className="w-16 mb-10" src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png" alt="Uber Logo" />
         <form onSubmit={(e)=>{
           submitHandler(e)
         }}>
@@ -95,17 +95,26 @@ const UserSignup = () => {
         </form>
         <p className="text-center mb-2">
           Already have an account?
-          <Link to="/login" className="text-blue-600">
-            Login here
-          </Link>
+          <Link to="/login" className="text-blue-600"> Login here </Link>
         </p>
       </div>
       <div>
         <p className="text-[10px] leading-tight">
           This site is protected by reCAPTCHA and the{" "}
-          <span className="underline">Google Privacy Policy</span> and{" "}
-          <span className="underline">Terms of Service apply</span>.
-        </p>
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer"
+          className="underline text-blue-600 hover:text-blue-800"
+          >
+          Google Privacy Policy
+        </a>{" "}
+        and{" "}
+        <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer"
+        className="underline text-blue-600 hover:text-blue-800"
+        >
+        Terms of Service
+        </a>{" "}
+       apply.
+      </p>
+
       </div>
     </div>
   );

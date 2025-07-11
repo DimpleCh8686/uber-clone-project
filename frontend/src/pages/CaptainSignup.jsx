@@ -17,6 +17,8 @@ const CaptainSignup = () => {
   const [vehiclePlate, setVehiclePlate] = useState('')
   const [vehicleCapacity, setVehicleCapacity] = useState('')
   const [vehicleType, setVehicleType] = useState('') 
+  const [vehicleModel, setVehicleModel] = useState('');
+
 
   const {captain, setCaptain} = useContext(CaptainDataContext)
 
@@ -35,17 +37,23 @@ const CaptainSignup = () => {
         color: vehicleColor,
         plate: vehiclePlate,
         capacity: vehicleCapacity,
-        vehicleType: vehicleType
+        vehicleType: vehicleType,
+        vehicleModel: vehicleModel
       }
     }
 
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`, captainData)
 
-    if(response.status === 201) {
-      const data = response.data
-      setCaptain(data.captain)
-      localStorage.setItem('token', data.token)
-      navigate('/captain-home')
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`, captainData);
+      if (response.status === 201) {
+        const data = response.data;
+        setCaptain(data.captain);
+        localStorage.setItem('token', data.token);
+        navigate('/captain-home');
+      }
+    } catch (err) {
+    console.error('Signup Error:', err.response?.data || err.message);
+    alert(err.response?.data?.error || 'Signup failed');
     }
 
     setEmail('')
@@ -56,6 +64,7 @@ const CaptainSignup = () => {
     setVehiclePlate('')
     setVehicleCapacity('')
     setVehicleType('')
+    setVehicleModel('')
 
   }
   return (
@@ -67,7 +76,7 @@ const CaptainSignup = () => {
         }}>
 
 
-          <h3 className='text-lg font-medium mb-2'>What's our Captain's name</h3>
+          <h3 className='text-lg font-medium mb-2'>What's our Captain's name?</h3>
           <div className='flex gap-4 mb-7'>
             <input
               required
@@ -91,7 +100,7 @@ const CaptainSignup = () => {
             />
           </div>
 
-          <h3 className='text-lg font-medium mb-2'>What's our Captain's email</h3>
+          <h3 className='text-lg font-medium mb-2'>What's our Captain's email?</h3>
           <input
             required
             className='bg-[#eeeeee] mb-6 rounded px-4 py-2 border w-full text-lg placeholder:text-base'
@@ -116,6 +125,14 @@ const CaptainSignup = () => {
           />
 
           <h3 className='text-lg font-medium mb-2'>Vehicle Information</h3>
+          <input
+           required
+           className='bg-[#eeeeee] w-full rounded-lg px-4 py-2 border text-lg placeholder:text-base mb-4'
+           type="text"
+           placeholder='Vehicle Model (e.g., Maruti Suzuki Alto)'
+           value={vehicleModel}
+           onChange={(e) => setVehicleModel(e.target.value)}
+          />
           <div className='flex gap-4 mb-7'>
             <input
             required
@@ -172,7 +189,21 @@ const CaptainSignup = () => {
         <p className='text-center mb-2'>Already have a account?<Link to='/captain-login' className='text-blue-600'> Login here</Link> </p>
       </div>
       <div>
-        <p className='text-[10-px] mt-6 leading-tight'>This site is protected by reCAPTCHA and the <span className='underline'>Google Privacy Policy</span> and <span className='underline'>Terms of Services apply</span>.</p>
+        <p className="text-[10px] leading-tight">
+          This site is protected by reCAPTCHA and the{" "}
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer"
+          className="underline text-blue-600 hover:text-blue-800"
+          >
+          Google Privacy Policy
+          </a>{" "}
+          and{" "}
+          <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer"
+           className="underline text-blue-600 hover:text-blue-800"
+          >
+          Terms of Service
+          </a>{" "}
+         apply.
+        </p>
       </div>
     </div>
   )

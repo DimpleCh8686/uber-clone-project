@@ -18,7 +18,7 @@ module.exports.authUser = async(req, res, next) => {
 
     try{
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await userModel.findById(decoded._id || decoded.id);
+        const user = await userModel.findById(decoded._id);
 
         req.user = user;
 
@@ -47,7 +47,7 @@ module.exports.authCaptain = async(req, res, next) => {
     try{
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         //console.log("Decoded Token:", decoded);
-        const captain = await captainModel.findById(decoded._id || decoded.id);
+        const captain = await captainModel.findById(decoded._id);
 
         req.captain = captain;
 

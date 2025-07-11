@@ -53,7 +53,12 @@ const captainSchema = new mongoose.Schema({
         vehicleType: {
             type: String,
             required: true,
-            enum: ['car', 'motorcycle', 'auto']
+            enum: ['car', 'moto', 'auto']
+        },
+        vehicleModel: {
+            type: String,
+            required: true,
+            minlength: [2, 'Model must be at least 2 characters long']
         }
     },
     location: {
@@ -63,7 +68,20 @@ const captainSchema = new mongoose.Schema({
         lng: {
             type: Number,
         }
+    },
+    earnings: {
+        type: Number,
+        default: 0
+    },
+    noOfRides: {
+        type: Number,
+        default: 0
+    },
+    hoursOnline: {
+        type: Number,
+        default: 0
     }
+
 })
 
 captainSchema.methods.generateAuthToken = function(){

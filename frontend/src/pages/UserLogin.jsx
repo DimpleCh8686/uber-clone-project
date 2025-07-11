@@ -37,11 +37,11 @@ const UserLogin = () => {
     return (
         <div className='p-7 h-screen flex flex-col justify-between'>
             <div>
-                <img className='w-16 mb-10' src="Uber-Logo.png" alt="Uber Logo" />
+                <img className='w-16 mb-10' src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png" alt="Uber Logo" />
                 <form onSubmit={(e)=>{
                     submitHandler(e)
                 }}>
-                    <h3 className='text-lg font-medium mb-2'>What's you email</h3>
+                    <h3 className='text-lg font-medium mb-2'>What's you email?</h3>
                     <input
                         required
                         value={email}
@@ -70,7 +70,7 @@ const UserLogin = () => {
                     >Login</button>
 
                 </form>
-                <p className='text-center'>New here?<Link to='/signup'  className='text-blue-600'>Create new Account</Link> </p>    
+                <p className='text-center'>New here?<Link to='/signup'  className='text-blue-600'> Create new Account</Link> </p>    
             </div>
             <div>
                 <Link to='/captain-login'
