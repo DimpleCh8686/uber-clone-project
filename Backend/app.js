@@ -16,7 +16,11 @@ connectToDb();
 
 app.use(cookieParser());
 
-const allowedOrigins = ['https://uber-clone-project-nine.vercel.app'];
+const allowedOrigins = [
+  'https://uber-clone-project-nine.vercel.app',
+  'https://uber-clone-project-git-main-dimple-choudharys-projects-9531078b.vercel.app',
+  'https://uber-clone-project-picerffri.vercel.app'
+];
 
 app.use(cors({
   origin: function (origin, callback) {
