@@ -22,7 +22,7 @@ const CaptainHome = () => {
 
   async function fetchCaptainProfile() {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/captain/profile`, {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/captains/profile`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
