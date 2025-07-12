@@ -18,15 +18,16 @@ app.use(cookieParser());
 
 const allowedOrigins = [
   'https://uber-clone-project-nine.vercel.app',
-  'https://uber-clone-project-git-main-dimple-choudharys-projects-9531078b.vercel.app',
-  'https://uber-clone-project-picerffri.vercel.app'
 ];
+
+const dynamicVercelRegex = /^https:\/\/uber-clone-project-[a-z0-9]+\.vercel\.app$/;
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.includes(origin) || dynamicVercelRegex.test(origin)) {
       callback(null, true);
     } else {
+      console.log('❌ CORS Rejected:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },

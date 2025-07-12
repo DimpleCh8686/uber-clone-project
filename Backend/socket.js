@@ -4,14 +4,23 @@ const captainModel = require('./models/captain.model');
 
 let io;
 
+const allowedOrigins = [
+  'https://uber-clone-project-nine.vercel.app',
+  'https://uber-clone-project.vercel.app'
+];
+const dynamicVercelRegex = /^https:\/\/uber-clone-project-[a-z0-9]+\.vercel\.app$/;
+
 function initializeSocket(server){
     io = socketIo(server, {
         cors: {
-            origin: [
-                'https://uber-clone-project-nine.vercel.app',
-                'https://uber-clone-project-git-main-dimple-choudharys-projects-9531078b.vercel.app',
-                'https://uber-clone-project-picerffri.vercel.app'
-            ],
+            origin: (origin, callback) => {
+                if (!origin || allowedOrigins.includes(origin) || dynamicVercelRegex.test(origin)) {
+                    callback(null, true);
+                } else {
+                    console.log('WebSocket CORS Rejected:', origin);
+                    callback(new Error('Not allowed by socket.io CORS'));
+                }
+            },
             methods: ['GET', 'POST'],
             credentials: true
         }
@@ -20,16 +29,13 @@ function initializeSocket(server){
     io.on('connection', (socket) => {
         console.log(`Client connected: ${socket.id}`);
 
-        socket.on('join', async(data)=>{
+        socket.on('join', async(data) => {
             const { userId, userType } = data;
 
-            //console.log(`User ${userId} joined as ${userType}`);
-
-            if(userType==='user'){
-                await userModel.findByIdAndUpdate(userId, {socketId: socket.id});
-                  //console.log(`Updated user ${userId} with socket ID ${socket.id}`);
-            }else if(userType==='captain'){
-                await captainModel.findByIdAndUpdate(userId, {socketId: socket.id});
+            if (userType === 'user') {
+                await userModel.findByIdAndUpdate(userId, { socketId: socket.id });
+            } else if (userType === 'captain') {
+                await captainModel.findByIdAndUpdate(userId, { socketId: socket.id });
             }
         });
 
@@ -48,21 +54,18 @@ function initializeSocket(server){
             });
         });
 
-        socket.on('disconnect', () =>{
+        socket.on('disconnect', () => {
             console.log(`Client disconnected: ${socket.id}`);
         });
-
     });
 }
 
 function sendMessageToSocketId(socketId, messageObject){
-    //console.log("Emitting to socketId:", socketId);
-    //console.log(messageObject);
-    if(io){
+    if (io) {
         io.to(socketId).emit(messageObject.event, messageObject.data);
-    }else{
-        console.log('Socket.io not iniitialized.');
+    } else {
+        console.log('Socket.io not initialized.');
     }
 }
 
-module.exports = {initializeSocket, sendMessageToSocketId}
+module.exports = { initializeSocket, sendMessageToSocketId };
