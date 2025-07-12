@@ -18,7 +18,7 @@ const FinishRide = ({ ride, setFinishRidePanel, fetchCaptainProfile }) => {
   async function endRide() {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/rides/end-ride`,
+        `${import.meta.env.VITE_API_BASE_URL}/rides/end-ride`,
         { rideId: ride?._id },
         {
           headers: {
