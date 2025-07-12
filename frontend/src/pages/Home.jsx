@@ -183,7 +183,7 @@ const Home = () => {
             <i className="ri-arrow-down-wide-line"></i>
           </h5>
           <h4 className='text-2xl font-semibold'>Find a Trip</h4>
-          <form onSubmit={submitHandler}>
+          <form onSubmit={submitHandler} className="relative py-3">
             <div className="line absolute h-16 w-1 top-[50%] -translate-y-1/2 left-5 bg-gray-700 rounded-full"></div>
             <input
               onClick={() => {
