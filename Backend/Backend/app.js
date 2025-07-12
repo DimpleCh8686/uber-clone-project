@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 // app.use(cors());
 app.use(cors({
-  origin: 'https://uber-clone-project-az6ieh8vy.vercel.app/', 
+  origin: 'https:// uber-clone-project-nine.vercel.app', 
   credentials: true
 }));
 
