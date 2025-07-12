@@ -27,7 +27,7 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin) || dynamicVercelRegex.test(origin)) {
       callback(null, true);
     } else {
-      console.log('❌ CORS Rejected:', origin);
+      console.log('CORS Rejected:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
