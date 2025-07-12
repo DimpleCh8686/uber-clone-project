@@ -6,7 +6,6 @@ let io;
 
 const allowedOrigins = [
   'https://uber-clone-project-nine.vercel.app',
-  'https://uber-clone-project.vercel.app'
 ];
 const dynamicVercelRegex = /^https:\/\/uber-clone-project-[a-z0-9]+\.vercel\.app$/;
 
