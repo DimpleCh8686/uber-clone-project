@@ -177,14 +177,14 @@ const Home = () => {
         <LiveTracking />
       </div>
 
-      <div className='absolute flex flex-col justify-end pointer-events-none'>
-        <div className='h-[30%] p-6 bg-white relative pointer-events-auto'>
+      <div className='absolute inset-0 flex flex-col justify-end pointer-events-none'>
+        <div className='h-[35%] p-6 bg-white relative pointer-events-auto'>
           <h5 ref={panelCloseRef} onClick={() => setPanelOpen(false)} className='absolute opacity-0 right-6 top-6 text-2xl'>
             <i className="ri-arrow-down-wide-line"></i>
           </h5>
           <h4 className='text-2xl font-semibold'>Find a Trip</h4>
           <form onSubmit={submitHandler}>
-            <div className="line absolute h-16 w-1 top-[55%] left-10 bg-gray-700 rounded-full"></div>
+            <div className="line absolute h-16 w-1 top-[50%] -translate-y-1/2 left-5 bg-gray-700 rounded-full"></div>
             <input
               onClick={() => {
                 setPanelOpen(true)
