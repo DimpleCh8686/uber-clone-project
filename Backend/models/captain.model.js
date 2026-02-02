@@ -61,26 +61,14 @@ const captainSchema = new mongoose.Schema({
             minlength: [2, 'Model must be at least 2 characters long']
         }
     },
-    // location: {
-    //     ltd:{
-    //         type: Number,
-    //     },
-    //     lng: {
-    //         type: Number,
-    //     }
-    // },
     location: {
-    type: {
-        type: String,
-        enum: ["Point"],
-        required: true,
-        default: "Point"
+        ltd:{
+            type: Number,
+        },
+        lng: {
+            type: Number,
+        }
     },
-    coordinates: {
-        type: [Number], // [lng, lat]
-        required: true
-    }
-},
     earnings: {
         type: Number,
         default: 0
